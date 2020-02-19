@@ -1,0 +1,123 @@
+
+{% extends "layout.html" %}
+{% block content %}
+<head>
+  <title>Bar charts with Matplotlib!</title>
+  
+</head>
+<body>
+    <style>
+        body {font-family: Arial;}
+        
+        /* Style the tab */
+        .tab {
+           overflow: hidden; 
+          background-color:#181745;
+          text-align: center;
+          width: 100%;
+        }
+        
+        /* Style the buttons inside the tab */
+        .tab a {
+          
+          color: #ffff;
+          width: 60px;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 35px;
+          
+          
+        }
+        
+        /* Change background color of buttons on hover */
+        .tab a:hover {
+          background-color: #ddd;
+        }
+        
+        /* Create an active/current tablink class */
+        .tab a.active {
+          background-color: #ccc;
+        }
+        .tablink{
+          background-color: inherit;
+          color:#181745;
+          float: left;
+          border: 10px;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+        
+        .column {
+  float: left;
+  
+  
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+  background: linear-gradient(to bottom left,#216e93,#21648a,#1f5881,#172d5b,#191c51);
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.header{
+  background-color: #ffff;
+  padding: 10px;
+ 
+}
+.iframe-container{
+  border: none;
+}
+img {
+                  display: block;
+                  margin-left: auto;
+                  margin-right: auto;
+                } 
+        </style>
+    
+
+
+    
+    <div class="row">
+        <div class="column left" style="background-color:#181745;">
+          <img src="static\logo.png" width="185px" height="120px" class="center">
+        </div>
+        <div class="column right" style="background-color:#bbb;">
+          
+          <h2 align="center" class="header" >Energy Dashboard </h2>
+          <div class="tab" width="100%">
+          <a href="{{ url_for('hour') }}" class="tablinks" target="graph">Hour</a>
+          <a href="{{ url_for('day') }}" class="tablinks" target="graph">Day</a>
+          <a href="{{ url_for('month') }}" class="tablinks" target="graph" >Month</a>
+          
+            
+        </div>
+        
+        
+        <div class="iframe-container">
+            {% with name="graph" %}     
+        
+            <iframe   name="graph" height=600px width="100%" frameBorder="0" ></iframe>
+            {% endwith %}
+        
+        </div>
+        </div>
+      </div>
+  
+
+    
+</body>
+{% endblock %}

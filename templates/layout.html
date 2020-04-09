@@ -14,15 +14,15 @@ body {
 
 .topnav {
   overflow: hidden;
-  background-color: #181745;
-  padding: 14px 16px;
+  background-color: #333;
+  
 }
 
 .topnav h1 {
   float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  
   text-decoration: none;
   font-size: 30px;
 }
@@ -35,16 +35,145 @@ body {
 .topnav a.active {
   background-color: #4CAF50;
   color: white;
+
+
+}
+body {font-family: Arial;
+          }
+        
+        /* Style the tab */
+        .tab {
+           overflow: hidden; 
+          background-color:#181745;
+          text-align: center;
+          width: 100%;
+          padding-left: 320px;
+        }
+        
+        /* Style the buttons inside the tab */
+        .tab a {
+          
+          color: #ffff;
+          width: 60px;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 35px;
+          
+          
+        }
+        
+        /* Change background color of buttons on hover */
+        .tab a:hover {
+          background-color: #ddd;
+        }
+        
+        /* Create an active/current tablink class */
+        .tab a.active {
+          background-color: #ccc;
+        }
+        .tablink{
+          background-color: inherit;
+          color:#181745;
+          float: left;
+          border: 10px;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+        
+        .column {
+  float: left;
+  
+  
+}
+
+.left {
+  width: 20%;
+}
+
+.right {
+  width: 80%;
+  background: linear-gradient(to bottom left,#216e93,#21648a,#1f5881,#172d5b,#191c51);
+}
+.main {
+  /*width: 80%;*/
+  background: linear-gradient(to bottom left,#216e93,#21648a,#1f5881,#172d5b,#191c51);
+  padding-left: 320px;
+}
+
+/* Clear floats after the columns */
+.main-content:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.header{
+  background-color: #ffff;
+  
+  padding-left: 320px;
+ 
+}
+.iframe-container{
+  border: none;
+}
+
+
+.side-nav{
+  width: 20%;
 }
 </style>
 </head>
 <body>
 
-<!-- <div class="topnav">
-  <img src="static/logo.png" class="center">
-</div> -->
 
 <div >
+    <div class="side-nav" style="background-color:#181745;" >
+        <div class="column left" style="background-color:#181745;">
+             <img src="static\logo.png" width="185px" height="120px" class="center">
+        </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+        <div>
+        <nav>
+          <ul>
+            <li>
+              <a href="#">
+                <span><i class="fa fa-bar-chart"></i></span>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+  
+                <span><i class="fa fa-money"></i></span>
+                <span>Cost</span>
+              </a>
+            </li>
+            <li >
+              <a href="{{ url_for('appliances') }}">
+                <span><i class="fa fa-lightbulb-o"></i></span>
+                <span>Appliances</span>
+                
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span><i class="fa fa-home"></i></span>
+                <span>Usage by Rooms</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      </div>
+    
   
   {% block content %}{% endblock %}
 </div>

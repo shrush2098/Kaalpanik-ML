@@ -2,12 +2,33 @@
 {% extends "layout.html" %}
 {% block content %}
 <head>
+
   <title>Bar charts with Matplotlib!</title>
-  
+  <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Responsive vertical menu navigation</title>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:700, 600,500,400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="main.css">
+
+    <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="main.js"></script>
+
+    
+      
+    
+    
+
 </head>
+
 <body>
     <style>
-        body {font-family: Arial;}
+        body {font-family: Arial;
+          }
         
         /* Style the tab */
         .tab {
@@ -15,6 +36,7 @@
           background-color:#181745;
           text-align: center;
           width: 100%;
+          padding-left: 320px;
         }
         
         /* Style the buttons inside the tab */
@@ -66,58 +88,95 @@
   width: 80%;
   background: linear-gradient(to bottom left,#216e93,#21648a,#1f5881,#172d5b,#191c51);
 }
+.main {
+  /*width: 80%;*/
+  background: linear-gradient(to bottom left,#216e93,#21648a,#1f5881,#172d5b,#191c51);
+  padding-left: 320px;
+}
 
 /* Clear floats after the columns */
-.row:after {
+.main-content:after {
   content: "";
   display: table;
   clear: both;
 }
 .header{
   background-color: #ffff;
-  padding: 10px;
+  
+  padding-left: 320px;
  
 }
 .iframe-container{
   border: none;
 }
-img {
-                  display: block;
-                  margin-left: auto;
-                  margin-right: auto;
-                } 
-        </style>
-    
 
 
-    
-    <div class="row">
-        <div class="column left" style="background-color:#181745;">
-          <img src="static\logo.png" width="185px" height="120px" class="center">
-        </div>
-        <div class="column right" style="background-color:#bbb;">
-          
-          <h2 align="center" class="header" >Energy Dashboard </h2>
-          <div class="tab" width="100%">
+.side-nav{
+  width: 20%;
+}
+
+</style>
+        
+       
+
+
+
+  
+
+  
+    <div class="main-content"></div>
+      
+    <h2 align="center" class="header" >Energy Dashboard </h2>
+
+    <br>
+    <br>
+
+       <div class="tab" width="100%">
           <a href="{{ url_for('hour') }}" class="tablinks" target="graph">Hour</a>
           <a href="{{ url_for('day') }}" class="tablinks" target="graph">Day</a>
           <a href="{{ url_for('month') }}" class="tablinks" target="graph" >Month</a>
-          
+        </div>
+        
+      <div class="main">
+
+        <div class="widget">
+          <div class="title">Cost predicted</div>
+          <div class="chart">
             
+            <div class="iframe-container">
+              {% with name="graph" %}     
+              <iframe   name="graph" height="250px" width="100%" ></iframe>
+              {% endwith %}
+            </div>
+
+          </div>
         </div>
-        
-        
-        <div class="iframe-container">
-            {% with name="graph" %}     
-        
-            <iframe   name="graph" height=600px width="100%" frameBorder="0" ></iframe>
-            {% endwith %}
-        
+
+        <div class="widget">
+          <div class="title">Change in Cost</div>
+          <div class="chart"></div>
         </div>
+
+        <div class="widget">
+          <div class="title">Active Appliances</div>
+          <div class="chart"></div>
         </div>
+
       </div>
+
+    </div>
+
+  </div>
+</div>
+
+    
   
 
     
 </body>
 {% endblock %}
+
+
+
+
+

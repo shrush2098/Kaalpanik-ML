@@ -48,32 +48,47 @@ def LinearRegressionfunction(df,offset):
     fig, ax = pyplot.subplots(nrows=2, ncols=2, figsize=(14, 14))
     i=0
    
+   
     for row in ax:
         for col in row:
             model=models[name[i]]
             nrmse,y_pred = sklearn_predict(model, X_train, y_train,X_test,y_test)
+
             result=pd.DataFrame()
             result['datetime']=df.datetime.iloc[len(X_train)+offset:]
+            #print(len(result.datetime))
             result['predicted']=y_pred
+            #print(len(result.predicted))
             result['actual']=y_test
-            rmse = sqrt(mean_squared_error(y_test, y_pred))
-            col.plot(result.datetime[:100],result.predicted[:100],color='blue',label='Predicted')
-            col.xaxis.set_major_locator(pyplot.MaxNLocator(7))
-            col.plot(result.datetime[:100],result.actual[:100],color='red', label='Actual')
-            col.set_xlabel('Date',fontsize=14)
-            col.set_ylabel('Energy Consumption(KW)',fontsize=14)
-            col.set_title(name[i]+' with NRMSE of : '+str(nrmse),fontsize=14)
-            col.legend()
-            
-            print('NRMSE for ',name[i] ,'regression is : ',nrmse)
-            i=i+1
-    pyplot.savefig(img, format='png')
-    pyplot.close()
-    img.seek(0)
+            result['datetime'] = pd.to_datetime(result['datetime'])
+            source = ColumnDataSource(result)
+            p = figure(x_axis_type="datetime", height=350, width=400)
+            p.line(x='datetime', y='predicted', line_width=2, source=source)
+            p.line(x='datetime', y='actual',color='red', line_width=2, source=source)
+            script, div = components(p)
+            # result=pd.DataFrame()
+            # result['datetime']=df.datetime.iloc[len(X_train)+offset:]
+            # result['predicted']=y_pred
+            # result['actual']=y_test
+            # rmse = sqrt(mean_squared_error(y_test, y_pred))
 
-    plot_url = base64.b64encode(img.getvalue())
+            # col.plot(result.datetime[:100],result.predicted[:100],color='blue',label='Predicted')
+            # col.xaxis.set_major_locator(pyplot.MaxNLocator(7))
+            # col.plot(result.datetime[:100],result.actual[:100],color='red', label='Actual')
+            # col.set_xlabel('Date',fontsize=14)
+            # col.set_ylabel('Energy Consumption(KW)',fontsize=14)
+            # col.set_title(name[i]+' with NRMSE of : '+str(nrmse),fontsize=14)
+            # col.legend()
+            
+    #         print('NRMSE for ',name[i] ,'regression is : ',nrmse)
+    #         i=i+1
+    # pyplot.savefig(img, format='png')
+    # pyplot.close()
+    # img.seek(0)
+
+    # plot_url = base64.b64encode(img.getvalue())
     compare=pd.DataFrame({'Actual':y_test,'Predicted ':y_pred})
-    return plot_url
+    return script,div
 
 
 
@@ -86,8 +101,9 @@ def hour():
     # AR3_model = sm.tsa.AR(df.TotalActivePower).fit(maxlag=24)
     # trialarima(df)
     # plot_url_ar=plot_ar_model(df, AR3_model, 24)
-    plot_url=LinearRegressionfunction(df,24)
-    return render_template('hour.html',plot_url=plot_url)
+    # plot_url=LinearRegressionfunction(df,24)
+    script, div=LinearRegressionfunction(df,24)
+    return render_template('hour.html',script=script, div=div)
 
 
 
@@ -95,17 +111,21 @@ def hour():
 def home():
     return render_template('chart.html')
 
+@app.route("/appliances")
+def appliances():
+    return render_template('appliances.html')
+
 @app.route("/day")
 def day():
     df = pd.read_csv('/home/dell/Documents/Btech Project/ESE Review/SwimmingPoolDays.csv', delimiter=',') 
-    plot_url=LinearRegressionfunction(df,30)
-    return render_template('day.html',plot_url=plot_url)
+    script, div=LinearRegressionfunction(df,30)
+    return render_template('day.html',script=script, div=div)
 
 @app.route("/month")
 def month():
     df = pd.read_csv('/home/dell/Documents/Btech Project/ESE Review/SwimmingPoolMonths.csv', delimiter=',')
-    plot_url=LinearRegressionfunction(df,12)
-    return render_template('month.html',plot_url=plot_url)
+    script, div=LinearRegressionfunction(df,12)
+    return render_template('month.html',script=script, div=div)
 
     
 
@@ -202,6 +222,7 @@ def plot_ar_model(data, model, ar_value):
     plot_url_ar = base64.b64encode(img.getvalue())
     compare=pd.DataFrame({'Actual':y_test,'Predicted ':y_pred})
     return plot_url_ar
+
 
  
 

@@ -1,4 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
+<h2 align="center" class="header" >Energy Dashboard </h2>
 
+<br>
+<br>
+
+   <div class="tab" width="100%">
+      <a href="{{ url_for('hourapp') }}" class="tablinks" target="graph">Hour</a>
+      <a href="{{ url_for('dayapp') }}" class="tablinks" target="graph">Day</a>
+      <a href="{{ url_for('monthapp') }}" class="tablinks" target="graph" >Month</a>
+    </div>
+    
+    <div class="col-sm">
+            {% with name="graph" %}     
+            <iframe   name="graph" height="800px" width="100%" ></iframe>
+            {% endwith %}
+        
+    </div>
+   
 {% endblock %}

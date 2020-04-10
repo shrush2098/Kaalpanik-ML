@@ -40,32 +40,32 @@ def LinearRegressionfunction(df,offset):
     X,y = to_supervised(df,offset)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
     
-    models=()
+    # models=()
 
-    name, models=getmodels()
-    img = StringIO.StringIO()
+    model=LinearRegression()
+    # img = StringIO.StringIO()
     
-    fig, ax = pyplot.subplots(nrows=2, ncols=2, figsize=(14, 14))
-    i=0
+    # fig, ax = pyplot.subplots(nrows=2, ncols=2, figsize=(14, 14))
+    #i=0
    
    
-    for row in ax:
-        for col in row:
-            model=models[name[i]]
-            nrmse,y_pred = sklearn_predict(model, X_train, y_train,X_test,y_test)
+    # for row in ax:
+    #     for col in row:
+            # model=models[name[i]]
+    nrmse,y_pred = sklearn_predict(model, X_train, y_train,X_test,y_test)
 
-            result=pd.DataFrame()
-            result['datetime']=df.datetime.iloc[len(X_train)+offset:]
-            #print(len(result.datetime))
-            result['predicted']=y_pred
-            #print(len(result.predicted))
-            result['actual']=y_test
-            result['datetime'] = pd.to_datetime(result['datetime'])
-            source = ColumnDataSource(result)
-            p = figure(x_axis_type="datetime", height=350, width=400)
-            p.line(x='datetime', y='predicted', line_width=2, source=source)
-            p.line(x='datetime', y='actual',color='red', line_width=2, source=source)
-            script, div = components(p)
+    result=pd.DataFrame()
+    result['datetime']=df.datetime.iloc[len(X_train)+offset:]
+    #print(len(result.datetime))
+    result['predicted']=y_pred
+    #print(len(result.predicted))
+    result['actual']=y_test
+    result['datetime'] = pd.to_datetime(result['datetime'])
+    source = ColumnDataSource(result)
+    p = figure(x_axis_type="datetime", height=350, width=400)
+    p.line(x='datetime', y='predicted', line_width=2, source=source)
+    p.line(x='datetime', y='actual',color='red', line_width=2, source=source)
+    script, div = components(p)
             # result=pd.DataFrame()
             # result['datetime']=df.datetime.iloc[len(X_train)+offset:]
             # result['predicted']=y_pred
@@ -95,15 +95,7 @@ def LinearRegressionfunction(df,offset):
 
 
 
-@app.route("/hour",methods=['GET'])
-def hour():
-    df = pd.read_csv('/home/dell/Documents/Btech Project/ESE Review/SwimmingPool_Hours.csv', delimiter=',') 
-    # AR3_model = sm.tsa.AR(df.TotalActivePower).fit(maxlag=24)
-    # trialarima(df)
-    # plot_url_ar=plot_ar_model(df, AR3_model, 24)
-    # plot_url=LinearRegressionfunction(df,24)
-    script, div=LinearRegressionfunction(df,24)
-    return render_template('hour.html',script=script, div=div)
+
 
 
 
@@ -127,7 +119,36 @@ def month():
     script, div=LinearRegressionfunction(df,12)
     return render_template('month.html',script=script, div=div)
 
+
+@app.route("/hour",methods=['GET'])
+def hour():
+    df = pd.read_csv('/home/dell/Documents/Btech Project/ESE Review/SwimmingPool_Hours.csv', delimiter=',') 
+    # AR3_model = sm.tsa.AR(df.TotalActivePower).fit(maxlag=24)
+    # trialarima(df)
+    # plot_url_ar=plot_ar_model(df, AR3_model, 24)
+    # plot_url=LinearRegressionfunction(df,24)
+    script, div=LinearRegressionfunction(df,24)
+    return render_template('hour.html',script=script, div=div)   
+
+
+
+
+
+@app.route("/dayapp")
+def dayapp():
     
+    return render_template('chart.html')
+
+@app.route("/monthapp")
+def monthapp():
+   
+    return render_template('chart.html')
+
+
+@app.route("/hourapp",methods=['GET'])
+def hourapp():
+    
+    return render_template('chart.html')   
 
 def to_supervised(df,offset):
     # convert history to a univariate series
@@ -184,44 +205,41 @@ def sklearn_predict(model, X_train, y_train,X_test,y_test):
     # predict the week, recursively
     y_pred= pipeline.predict(X_test)
     rmse = sqrt(mean_squared_error(y_test, y_pred))
-    # print(rmse)
-    # print(max(y_test))
-    # print(min(y_test))
     score= rmse / (max(y_test) - min(y_test))
     
     return score,y_pred
 
 #function to plot AR time series model with actual usage
-def plot_ar_model(data, model, ar_value):
-    data= data.drop(['TotalReactivePower','CurrentIntensity','Device_1','Device_2','Device_3','Voltage'],axis=1)
-    data.set_index('datetime')
-    data['datetime'] = pd.to_datetime(data['datetime'], format='%Y/%m/%d %H:%M:%S')
-    x = data.datetime
-    y_true = data.TotalActivePower
+# def plot_ar_model(data, model, ar_value):
+#     data= data.drop(['TotalReactivePower','CurrentIntensity','Device_1','Device_2','Device_3','Voltage'],axis=1)
+#     data.set_index('datetime')
+#     data['datetime'] = pd.to_datetime(data['datetime'], format='%Y/%m/%d %H:%M:%S')
+#     x = data.datetime
+#     y_true = data.TotalActivePower
 
-    #plot actual usage
-    pyplot.subplots(1,1,figsize=(14,6))
-    pyplot.plot(x,y_true, label='Actual')
+#     #plot actual usage
+#     pyplot.subplots(1,1,figsize=(14,6))
+#     pyplot.plot(x,y_true, label='Actual')
 
-    x_pred = x[ar_value:]
-    y_pred = model.predict()
+#     x_pred = x[ar_value:]
+#     y_pred = model.predict()
 
-    #plot model prediction with AR
-    pyplot.plot(x_pred,y_pred, color='red', label='AR')
+#     #plot model prediction with AR
+#     pyplot.plot(x_pred,y_pred, color='red', label='AR')
     
-    rmse= math.sqrt(mean_squared_error(y_pred, y_true[ar_value:]))
+#     rmse= math.sqrt(mean_squared_error(y_pred, y_true[ar_value:]))
 
-    pyplot.title("Auto Rrgression with RMSE of -{}".format(rmse))
-    pyplot.xlabel("Date-Time", fontsize=16)
-    pyplot.ylabel("Energy Consumption (kW)", fontsize=16)
-    pyplot.legend()
-    pyplot.savefig(img, format='png')
-    pyplot.close()
-    img.seek(0)
+#     pyplot.title("Auto Rrgression with RMSE of -{}".format(rmse))
+#     pyplot.xlabel("Date-Time", fontsize=16)
+#     pyplot.ylabel("Energy Consumption (kW)", fontsize=16)
+#     pyplot.legend()
+#     pyplot.savefig(img, format='png')
+#     pyplot.close()
+#     img.seek(0)
 
-    plot_url_ar = base64.b64encode(img.getvalue())
-    compare=pd.DataFrame({'Actual':y_test,'Predicted ':y_pred})
-    return plot_url_ar
+#     plot_url_ar = base64.b64encode(img.getvalue())
+#     compare=pd.DataFrame({'Actual':y_test,'Predicted ':y_pred})
+#     return plot_url_ar
 
 
  

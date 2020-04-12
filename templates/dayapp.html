@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hour App</title>
+</head>
+<body>
+
+	<style type="text/css">
+		
+	.container-name div {
+    display: inline-block;
+	width: 430px;
+	min-height: 50px;
+	/* background-color: #1f5881 ; */
+    /* background-color: #181745; */
+    background-color: #1E365D;
+    
+	height: auto;
+  }
+
+  .widget {
+  flex-basis: 300px;
+  flex-grow: 10;
+  height: 620px;
+  margin: 15px;
+  border-radius: 6px;
+  /* background-color:  #1f5881; */
+  
+  background-color: #1E365D;
+  position: relative;
+}
+.widget .title {
+  /* background-color: #1f5881; */
+  
+  /* background-color: #181745; */
+  background-color: #1E365D;
+  border-bottom: 1px solid #dfe4ec;
+  padding: 10px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  color: #ffffff;
+  font-weight: 600;
+}
+/* .allcontents{
+    height: 800px;
+    width: 70%;
+    align: right;
+} */
+
+		.tab {
+           overflow: hidden; 
+          /* background-color:#1f5881; */
+          
+          /* background-color: #181745; */
+          background-color: #1E365D;
+          text-align: center;
+          width: 500px;
+        }
+        
+        /* Style the buttons inside the tab */
+        .tab a {
+          
+          color: #ffff;
+          width: 60px;
+          border: 10px;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 20px;
+          
+          
+        }
+        
+        /* Change background color of buttons on hover */
+        .tab a:hover {
+          background-color: #ddd;
+        }
+        
+        /* Create an active/current tablink class */
+        .tab a.active {
+          background-color: #ccc;
+        }
+        .tablink{
+          background-color: inherit;
+          color: #18335e;
+          float: left;
+          border: 10px;
+          outline: none;
+          cursor: pointer;
+          padding: 14px 16px;
+          transition: 0.3s;
+          font-size: 17px;
+        }
+
+        .dropdown {
+  			position: relative;
+  			display: inline-block;
+		}
+
+		.dropdown-content {
+  			display: none;
+  			position: absolute;
+  			background-color: #1f5881;
+  			min-width: 160px;
+  			box-shadow: 0px 8px 16px 0px #1f5881;
+  			padding: 12px 16px;
+  			z-index: 1;}
+
+
+
+
+
+
+
+
+	</style>
+    <div class ="allcontents">
+	<div class="widget"> 
+
+		<div class="title">APPLIANCES</div>
+		<br>
+
+		 <div class="tab" width="100%">
+          <a href="{{ url_for('hour') }}" class="tablinks" target="graph">This Month</a>
+          <a href="{{ url_for('day') }}" class="tablinks" target="graph">Last Month</a>
+        </div>
+
+      	<br>
+
+		<div class="container-name">
+
+		<div class="div0"></div>
+
+
+		<div class="div1">
+			
+			<div class="dropdown">
+        	<label for="cars" ><font color="white">Usage By:</font></label>
+
+			<select id="activeappliances">
+  			<option value="all">All</option>
+  			<option value="lighting">Lighting</option>
+  			<option value="heating">Heating</option>
+  			<option value="jacuzzi">Jacuzzi</option>
+			</select>
+        	</div>
+
+            <div class="div2" align="right">
+			<font color="white">text kWh</font>
+		</div>
+
+		</div>
+
+		<!-- <div class="div2">
+			<font color="white">text kWh</font>
+		</div> -->
+
+    <br>
+        <div class="chart">
+		<div class="iframe-container">
+        
+              {% with name="graph" %}     
+              <iframe   name="graph" height="250px" width="100%" ></iframe>
+              {% endwith %}
+        </div>
+        </div>
+
+		</div>
+
+</div>
+</div>
+</body>
+</html>
